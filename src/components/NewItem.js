@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { Container, Row, Col, Button, Card, Form } from 'react-bootstrap';
+import { Container, Row, Button, Card, Form, Alert } from 'react-bootstrap';
 import * as findersFeeAPI from '../utils/api'
 
 export class NewItem extends Component {
@@ -10,7 +10,8 @@ export class NewItem extends Component {
             itemName: '',
             itemCategory: '',
             itemDescription: '',
-            itemTip: ''
+            itemTip: '',
+            showConfirm: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,12 +27,23 @@ export class NewItem extends Component {
     handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const item = this.state
+            const item = {
+                itemName: this.state.itemName,
+                itemCategory: this.state.itemCategory,
+                itemDescription: this.state.itemDescription,
+                itemTip: this.state.itemTip
+            }
             item.userId = this.props.user._id
             item.userEmail = this.props.user.email
             item.postDate = Date.now()
-            const newItem = await findersFeeAPI.addItem(item)
-            console.log(newItem)
+            await findersFeeAPI.addItem(item)
+            this.setState({
+                itemName: '',
+                itemCategory: '',
+                itemDescription: '',
+                itemTip: '',
+                showConfirm: true
+            })
 
         } catch (errors) {
             console.log(errors)
@@ -45,6 +57,10 @@ export class NewItem extends Component {
             itemDescription: '',
             itemTip: ''
         });
+    }
+
+    setShow(state) {
+        this.setState({ showConfirm: state })
     }
 
     render() {

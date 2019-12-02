@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button, Badge, Modal, Form } from 'react-bootstrap';
+import { Card, Button, Badge, Form } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Container, Row } from 'react-bootstrap';
 import { getAllItems } from '../actions/itemActions'
@@ -17,14 +17,7 @@ class SearchItems extends Component {
 
     componentDidMount() {
         this.props.getAllItems()
-        console.log(this.props.items)
     }
-
-    // handleChange(event) {
-    //     let value = event.target.value
-    //     let name = event.target.id
-    //     this.setState({ [name]: value });
-    // }
 
     handleChange(name, e) {
         var change = {};
@@ -34,12 +27,9 @@ class SearchItems extends Component {
 
     updateItem = async (id) => {
         try {
-            console.log('clicked', this.state[id])
             const finderEmail = this.state[id]
-            const update = await findersFeeAPI.updateItem(id, finderEmail)
-            console.log(update)
+            await findersFeeAPI.updateItem(id, finderEmail)
             this.setState({ [id]: '' })
-            console.log(this.state)
 
         } catch (errors) {
             console.log(errors)
@@ -55,7 +45,7 @@ class SearchItems extends Component {
                         <Card.Subtitle><h4><Badge variant="secondary">{item.itemCategory}</Badge></h4></Card.Subtitle>
                         <Card.Text className="mt-2" style={{ height: '7em' }}>{item.itemDescription}</Card.Text>
                         <Form>
-                            <Form.Group className="mb-1" controlId="findersEmail">
+                            <Form.Group className="mb-1" controlId={item._id}>
                                 <Form.Control onChange={this.handleChange.bind(this, item._id)} value={this.state[item._id]} type="email" placeholder="Enter email" />
                             </Form.Group>
                         </Form>

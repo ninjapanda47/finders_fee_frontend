@@ -54,8 +54,14 @@ export const getItemsbyUser = id =>
         .then(res => res.json())
         .then(data => data);
 
+// Get items by category
+export const getItemsByCategory = category =>
+    fetch(`${api}/findersFee/searchbycategory/${category}`, { headers })
+        .then(res => res.json())
+        .then(data => data);
+
 // Get all items 
-export const getAll = () =>
+export const getAllItems = () =>
     fetch(`${api}/findersFee/getAll`, { headers })
         .then(res => res.json())
         .then(data => data);

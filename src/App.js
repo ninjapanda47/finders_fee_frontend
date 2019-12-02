@@ -15,7 +15,6 @@ class App extends Component {
     super(props);
     this.state = {
       isloggedin: false,
-      username: ''
     };
 
   }
@@ -24,8 +23,12 @@ class App extends Component {
     console.log(this.state);
   }
 
-  checkUserLogin = ({ isloggedin, username }) => {
-    isloggedin ? this.setState({ isloggedin: true, username: username }) : this.setState({ isloggedin: false })
+  checkUserLogin = ({ isloggedin }) => {
+    isloggedin ? this.setState({ isloggedin: true }) : this.setState({ isloggedin: false })
+  }
+
+  logOut = () => {
+    this.setState({ isloggedin: false })
   }
 
   render() {
@@ -53,7 +56,7 @@ class App extends Component {
       <div className="App">
         <Route
           path="/"
-          render={props => <NavBar {...props} isloggedin={this.state.isloggedin} username={this.state.username} />}
+          render={props => <NavBar {...props} isloggedin={this.state.isloggedin} logOut={this.logOut} />}
         />
         <Switch>
           <Route

@@ -1,17 +1,29 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, Button, Dropdown, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { NavLink } from "react-router-dom"
+import { getItemsByCategory } from '../actions/itemActions'
 
 class NavBar extends Component {
 
-    getAll() {
+    constructor(props) {
+        super(props);
+    }
 
+    getItemsByCategory = async (category) => {
+        this.props.getItemsByCategory(category)
     }
 
     render() {
 
-        const loginButton = this.props.isloggedin ? <Navbar.Brand className="navbar-brand">{this.props.username}</Navbar.Brand>
+        const capitalize = (s) => {
+            return s.charAt(0).toUpperCase() + s.slice(1)
+        }
+
+        const categories = ['collectibles', 'technology', 'fashion', 'literature', 'misc']
+        const selectDropDown = categories.map(category => (<Dropdown.Item key={category} onClick={e => this.getItemsByCategory(category)}>{capitalize(category)}</Dropdown.Item>))
+
+        const loginButton = this.props.isloggedin ? <Button variant="secondary" onClick={() => { this.props.logOut() }}>Log out</Button>
             : <NavLink to="/login"><Button variant="primary">Login</Button></NavLink>
 
         const links = this.props.isloggedin ? <Nav className="mr-auto">
@@ -30,6 +42,9 @@ class NavBar extends Component {
                         {links}
                     </Navbar.Collapse>
                     <Navbar.Collapse className="justify-content-end">
+                        <DropdownButton id="dropdown-basic-button" title="Search by Category" variant="secondary" className="mr-2">
+                            {selectDropDown}
+                        </DropdownButton>
                         <Nav className="justify-content-end">
                             {loginButton}
                         </Nav>
@@ -42,6 +57,7 @@ class NavBar extends Component {
 
 const mapStateToProps = state => ({
     user: state.user.item,
+    items: state.items.items
 })
 
-export default connect(mapStateToProps)(NavBar)
+export default connect(mapStateToProps, { getItemsByCategory })(NavBar)

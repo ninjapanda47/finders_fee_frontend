@@ -16,11 +16,17 @@ class UserView extends Component {
     }
 
     render() {
+        const status = (found) => {
+            if (found) { return <h4><Badge variant="success">FOUND</Badge></h4> } return <h4><Badge variant="danger">Still looking</Badge></h4>
+        }
         const cards = this.props.items.map(item => (
             <div key={item._id} className="m-2">
                 <Card style={{ width: '24rem', height: '20rem' }} className="center mb-2">
                     <Card.Body>
-                        <Card.Title>{item.itemName}</Card.Title>
+                        <Card.Title><h3>{item.itemName}</h3></Card.Title>
+                        <Card.Subtitle><h4><Badge variant="secondary">{item.itemCategory}</Badge></h4></Card.Subtitle>
+                        <Card.Text className="mt-2" style={{ height: '7em' }}>{item.itemDescription}</Card.Text>
+                        {status(item.itemFound)}
                     </Card.Body>
                 </Card>
             </div>

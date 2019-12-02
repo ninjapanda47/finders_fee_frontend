@@ -35,10 +35,10 @@ export class Login extends Component {
             console.log(login)
             if (login.success) {
                 this.props.setUserInfo(login.user)
-                this.props.isloggedin({ isloggedin: true, username: login.user.userName })
+                this.props.isloggedin({ isloggedin: true })
                 this.props.history.push("/userView")
             } else {
-                this.props.isloggedin({ isloggedin: false, username: null })
+                this.props.isloggedin({ isloggedin: false })
                 this.setState({ errorMessage: login.info.errors, authFailed: true })
                 console.log(this.state)
             }
